@@ -54,10 +54,8 @@ class Pelicula:
 def guardar(pelicula):
     conexion = ConexionDB()
 
-    sql = f"""
-    INSERT INTO peliculas (nombre, duracion, genero)
-    VALUES('{pelicula.nombre}', '{pelicula.duracion}', '{pelicula.genero}')
-    """
+    sql = f"""INSERT INTO peliculas (nombre, duracion, genero)
+    VALUES('{pelicula.nombre}', '{pelicula.duracion}', '{pelicula.genero}')"""
 
     try:
         conexion.cursor.execute(sql)
@@ -68,6 +66,7 @@ def guardar(pelicula):
         messagebox.showerror(titulo, mensaje)
 
 def listar():
+
     conexion = ConexionDB()
 
     lista_peliculas = []
@@ -84,3 +83,31 @@ def listar():
         messagebox.showerror(titulo, mensaje)
 
     return lista_peliculas
+
+def editar(pelicula, id_pelicula):
+    conexion = ConexionDB()
+
+    sql = f"""UPDATE peliculas
+    SET nombre = '{pelicula.nombre}', duracion = '{pelicula.duracion}', genero = '{pelicula.genero}'
+    WHERE id_pelicula = {id_pelicula}"""
+
+    try:
+        conexion.cursor.execute(sql)
+        conexion.cerrar()
+    except:
+        titulo = "Edición de Datos"
+        mensaje = "No se ha podido editar este registro."
+        messagebox.showerror(titulo, mensaje)
+
+def eliminar(id_pelicula):
+    conexion = ConexionDB()
+
+    sql = f"DELETE FROM peliculas WHERE id_pelicula = {id_pelicula}"
+
+    try:
+        conexion.cursor.execute(sql)
+        conexion.cerrar()
+    except:
+        titulo = "Eliminar Datos"
+        mensaje = "No se ha podido eliminar el registro."
+        messagebox.showerror(titulo, mensaje)
