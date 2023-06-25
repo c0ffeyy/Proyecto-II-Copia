@@ -1,8 +1,12 @@
-import tkinter as tk
-from tkinter import ttk, messagebox
-from model.pelicula_dao import crear_tabla, borrar_tabla
-from model.pelicula_dao import Pelicula, guardar, listar, editar, eliminar
+import tkinter as tk # Importamos el módulo Tkinter como "tk"
+from tkinter import ttk, messagebox # Importamos del módulo Tkinter otras clases necesarias
+from model.pelicula_dao import crear_tabla, borrar_tabla # Importamos funciones necesarias de módulo personalizado
+from model.pelicula_dao import Pelicula, guardar, listar, editar, eliminar # Importamos una clase y otras funciones necesarias de módulo personalizado
 
+# Función que crea la barra de menú de la app:
+
+# Argumentos:
+#     root = La ventana principal de la app
 def barra_menu(root):
     barra_menu = tk.Menu(root)
     root.config(menu=barra_menu, width=300, height=300)
@@ -18,8 +22,12 @@ def barra_menu(root):
     barra_menu.add_cascade(label="Configuración")
     barra_menu.add_cascade(label="Ayuda")
 
+# Clase principal del marco de la app:
 class Frame(tk.Frame):
-    def __init__ (self, root = None):
+    # Argumentos:
+
+    # root = La ventana principal de la app.
+    def __init__ (self, root = None): # Constructor de la clase.
         super().__init__(root, width=480, height=320)
         self.root = root
         self.pack()
@@ -30,8 +38,9 @@ class Frame(tk.Frame):
         self.deshabilitar_campos()
         self.tabla_peliculas()
 
+    # Método que crea los campos y botones relacionados con la información de la película:
     def campos_pelicula(self):
-        # Labels de cada campo:
+        # Labels (texto) de cada campo:
         self.label_nombre = tk.Label(self, text="Nombre: ")
         self.label_nombre.config(font=("Arial", 12, "bold"))
         self.label_nombre.grid(row=0, column=0, padx=10, pady=10)
@@ -44,7 +53,7 @@ class Frame(tk.Frame):
         self.label_genero.config(font=("Arial", 12, "bold"))
         self.label_genero.grid(row=2, column=0, padx=10, pady=10)
 
-        # Entrys de cada campo:
+        # Entrys (entradas) de cada campo:
         self.mi_nombre = tk.StringVar()
         self.entry_nombre = tk.Entry(self, textvariable=self.mi_nombre)
         self.entry_nombre.config(width=50, font=("Arial", 12))
@@ -59,8 +68,6 @@ class Frame(tk.Frame):
         self.entry_genero = tk.Entry(self, textvariable=self.mi_genero)
         self.entry_genero.config(width=50, font=("Arial", 12))
         self.entry_genero.grid(row=2, column=1, padx=10, pady=10, columnspan=2)
-
-        # Botones:
 
         # Botón de Nuevo:
         self.boton_nuevo = tk.Button(self, text="Nuevo", command=self.habilitar_campos)
@@ -77,6 +84,7 @@ class Frame(tk.Frame):
         self.boton_cancelar.config(width=20, font=("Arial", 12, "bold"), fg="#DAD5D6", bg="#BD152E", cursor="hand2", activebackground="#E15370")
         self.boton_cancelar.grid(row=3, column=2, padx=10, pady=10)
 
+    # Método que habilita los campos de entrada y los botones para permitir la edición de datos:
     def habilitar_campos(self):
         self.mi_nombre.set("")
         self.mi_duracion.set("")
@@ -89,6 +97,7 @@ class Frame(tk.Frame):
         self.boton_guardar.config(state="normal")
         self.boton_cancelar.config(state="normal")
 
+    # Método que deshabilita los campos de entrada y los botones, restableciendo los valores por defecto:
     def deshabilitar_campos(self):
         self.id_pelicula = None
         self.mi_nombre.set("")
@@ -102,6 +111,7 @@ class Frame(tk.Frame):
         self.boton_guardar.config(state="disabled")
         self.boton_cancelar.config(state="disabled")
 
+    # Método que guarda en la base de dato los datos ingresados en los campos de entrada:
     def guardar_datos(self):
         pelicula = Pelicula(
             self.mi_nombre.get(),
@@ -119,6 +129,7 @@ class Frame(tk.Frame):
         # Deshabilitamos los campos:
         self.deshabilitar_campos()
     
+    # Método que crea y muestra una tabla con los registros de películas en la base de datos:
     def tabla_peliculas(self):
         # Recuperamos la lista de películas:
         self.lista_peliculas = listar()
@@ -151,6 +162,7 @@ class Frame(tk.Frame):
         self.boton_eliminar.config(width=20, font=("Arial", 12, "bold"), fg="#DAD5D6", bg="#BD152E", cursor="hand2", activebackground="#E15370")
         self.boton_eliminar.grid(row=5, column=1, padx=10, pady=10)
 
+    # Método que obtiene los datos del registro seleccionado en la tabla y los carga en los campos de entrada para su edición:
     def editar_datos(self):
         try:
             self.id_pelicula = self.tabla.item(self.tabla.selection())["text"]
@@ -168,6 +180,7 @@ class Frame(tk.Frame):
             mensaje = "No ha seleccionado ningún registro."
             messagebox.showerror(titulo, mensaje)
 
+    # Método que elimina el registro seleccionado en la tabla de la base de datos:
     def eliminar_datos(self):
         try:
             self.id_pelicula = self.tabla.item(self.tabla.selection())["text"]
