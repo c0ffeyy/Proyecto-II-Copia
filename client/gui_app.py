@@ -90,6 +90,7 @@ class Frame(tk.Frame):
         self.boton_cancelar.config(state="normal")
 
     def deshabilitar_campos(self):
+        self.id_pelicula = None
         self.mi_nombre.set("")
         self.mi_duracion.set("")
         self.mi_genero.set("")
@@ -109,11 +110,9 @@ class Frame(tk.Frame):
         )
 
         if self.id_pelicula == None:
-            guardar(pelicula)
+            guardar(pelicula) 
         else:
             editar(pelicula, self.id_pelicula)
-
-        guardar(pelicula)
 
         self.tabla_peliculas()
 
@@ -175,6 +174,7 @@ class Frame(tk.Frame):
             eliminar(self.id_pelicula)
 
             self.tabla_peliculas()
+            self.id_pelicula = None
         except:
             titulo = "Eliminar un Registro"
             mensaje = "No se ha seleccionado ningún registro."

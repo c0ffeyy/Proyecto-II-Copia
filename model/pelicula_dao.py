@@ -66,7 +66,6 @@ def guardar(pelicula):
         messagebox.showerror(titulo, mensaje)
 
 def listar():
-
     conexion = ConexionDB()
 
     lista_peliculas = []
